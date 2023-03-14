@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:senproj/settings.dart';
 import 'package:senproj/profile.dart';
+import 'package:senproj/loginpage.dart';
 
 late List<CameraDescription> _cameras;
 
@@ -22,7 +23,7 @@ class DetectionPage extends StatefulWidget {
 class _DetectionPageState extends State<DetectionPage> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: DetectionScreen());
+    return MaterialApp(home: LoginPage());
   }
 }
 

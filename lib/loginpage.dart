@@ -1,39 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   //text editing controllers
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   //sign user in method
-  void signUserIn() {}
+  void signUserIn() async {
+    //show loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text, password: passwordController.text);
+
+    //pop the loading circle
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[300] ,
+        backgroundColor: Colors.grey[300],
         body: SafeArea(
           child: Center(
             child: Column(children: [
               const SizedBox(height: 50),
               //logo
-              // const Icon(
-              //   Icons.lock,
-              //   size: 120,
-              // ),
-              Container(
-                height: MediaQuery.of(context).size.width *0.5,
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/logo2.png'),
-                    fit: BoxFit.fill,
-                  ),
-
-                ),
+              const Icon(
+                Icons.lock,
+                size: 120,
               ),
+
               const SizedBox(height: 50),
               //welcome back
               Text(
@@ -50,7 +63,7 @@ class LoginPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: TextField(
-                  controller: usernameController,
+                  controller: emailController,
                   obscureText: false,
                   decoration: InputDecoration(
                     enabledBorder: const OutlineInputBorder(
@@ -61,7 +74,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     fillColor: Colors.grey.shade200,
                     filled: true,
-                    hintText: 'Username',
+                    hintText: 'Email',
                     hintStyle: TextStyle(color: Colors.grey[500]),
                   ),
                 ),
@@ -132,10 +145,11 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 50),
 
               //register
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text( 'Register',
+                children: [
+                  Text(
+                    'Register',
                     style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
